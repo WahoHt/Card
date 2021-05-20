@@ -1,0 +1,73 @@
+body{
+    background: #E5E5E5;
+    margin: 0;
+}
+#queryBlock{
+    display: flex;
+    margin:0;
+    height: 50px;
+    background-color: #DCDCDC;
+}
+#cardsBlock{
+    justify-content: center;
+}
+
+#query,
+#card,
+img{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+img{
+    width: 83%;
+}
+#inputQuery{
+    outline:none;
+    height: 20px;
+    border-radius: 15px;
+}
+#card{
+    text-align: center;
+    background-color: rgb(34, 184, 230);
+    margin: 10px 0 10px 30px;
+    border: 4px solid black;
+    border-radius: 25px;
+    padding-top: 10px;
+}
+
+#query{
+    position:relative;
+    width: 300px;
+    margin: 0 auto;
+}
+
+#inputQuery{
+    width: 95%;
+    height: 42px;
+    padding-left: 10px;
+    border: 2px solid #7BA7AB;
+    border-radius: 5px;
+    outline: none;
+    background: #F9F0DA;
+    color: #9E9C9C;
+}
+
+#buttonQuery{
+position: absolute;
+top: 0;
+right: 0px;
+width: 42px;
+height: 47px;
+border: none;
+background: #7BA7AB;
+border-radius: 0 5px 5px 0;
+cursor: pointer;
+}
+
+#buttonQuery::before{
+    content: "Click";
+    font-size: 12px;
+    color:black;
+}
