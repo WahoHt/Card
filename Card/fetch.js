@@ -1,11 +1,10 @@
-const buttonQuery = document.getElementById('buttonQuery')
-const inputQuery = document.getElementById('inputQuery')
-const cardsBlock = document.getElementById('cardsBlock')
+const buttonQuery = document.getElementsByClassName('buttonQuery')[0]
+const inputQuery = document.getElementsByClassName('inputQuery')[0]
+const cardsBlock = document.getElementsByClassName('cardsBlock')[0]
 const urlImage = "https://image.tmdb.org/t/p"
 const urlImageSize = "/w300"
 const urlMoonPhase = `http://api.farmsense.net/v1/moonphases/?d=`
 const queryFilmDefault = '&query=War'
-
 
 let queryFilm ='&query='
 
@@ -21,29 +20,34 @@ function getDataCard(){
             return response.json();
         })
         .then(( { results } )=>{
-            results.forEach(elem => {
-                const cardImage = document.createElement('img')
-                const cardTime = document.createElement('div')
-                cardTime.setAttribute('id','cardTime')
-                const cardName = document.createElement('div')
-                cardName.setAttribute('id','cardName')
-                const card = document.createElement('div')
-                card.setAttribute('id','card')
-                const timeFilm = elem.release_date.replace(/[^0-9]/g, '')
-                getDataMoonPhase(timeFilm,card) //fn fetch query Moon
-                if(elem.poster_path){
-                    cardName.append('Name: ' + elem.original_title)
-                    card.append(cardName)
-                    cardImage.setAttribute('src',`${urlImage + urlImageSize + elem.poster_path}`)
-                    cardsBlock.style.display = "flex"
-                    cardsBlock.style.flexWrap = "wrap"
-                    card.append(cardImage)
-                    cardTime.append('Release: ' + elem.release_date)
-                    card.append(cardTime)
-                    cardsBlock.append(card)
-                }
-            });
+            setDataCard(results)
         })
+        .catch((Error)=>{
+            console.log(Error)
+        })
+}
+
+function setDataCard(results){
+    results.forEach(elem => {
+        const cardImage = document.createElement('img')
+        const cardTime = document.createElement('div')
+        cardTime.setAttribute('class','cardTime')
+        const cardName = document.createElement('div')
+        cardName.setAttribute('class','cardName')
+        const card = document.createElement('div')
+        card.setAttribute('class','card')
+        const timeFilm = elem.release_date.replace(/[^0-9]/g, '')
+        getDataMoonPhase(timeFilm,card)
+        if(elem.poster_path){
+            cardName.append('Name: ' + elem.original_title)
+            card.append(cardName)
+            cardImage.setAttribute('src',`${urlImage + urlImageSize + elem.poster_path}`)
+            card.append(cardImage)
+            cardTime.append('Release: ' + elem.release_date)
+            card.append(cardTime)
+            cardsBlock.append(card)
+        }
+    });
 }
 
 function getDataMoonPhase(timeFilm,card){
@@ -57,27 +61,27 @@ function getDataMoonPhase(timeFilm,card){
         return response.json();
     })
     .then((results)=>{
-        results.forEach(elem => {
-            console.log(card)
-            const cardMoonPhase = document.createElement('div')
-            if(elem.Phase){
-                cardMoonPhase.append('Phase: ' + elem.Phase)
-                // cardMoonPhase.style.width = '50px'
-                // cardMoonPhase.style.height = '30px'
-                cardMoonPhase.setAttribute('id','cardPhase')
-                console.log(cardsBlock)
-                card.append(cardMoonPhase)
-                cardsBlock.append(card)
-            }
-        });
+        setDataMoonPhase(results,card)
     })
+}
+
+function setDataMoonPhase(results,card){
+    results.forEach(elem => {
+        const cardMoonPhase = document.createElement('div')
+        if(elem.Phase){
+            cardMoonPhase.append('Phase: ' + elem.Phase)
+            cardMoonPhase.setAttribute('class','cardPhase')
+            card.append(cardMoonPhase)
+            cardsBlock.append(card)
+        }
+    });
 }
 
 
 buttonQuery.addEventListener('click',function(event){
     if(event){
         cardsBlock.innerHTML = ''
-        getDataCard()
+        setDataCard()
     }
 })
 getDataCard()
