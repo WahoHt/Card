@@ -7,6 +7,7 @@ const queryFilmDefault = '&query=War'
 
 let queryFilm ='&query='
 
+<<<<<<< HEAD
 async function getData(nameFilm) {
   const { results } = await fetch(
     `https://api.themoviedb.org/3/search/movie?api_key=f4ecb1fb8bfb1422c9eb54f8bf56eb52${
@@ -14,6 +15,15 @@ async function getData(nameFilm) {
   ).then((response) => response.json())
 
   const moonPhase = await Promise.all(
+=======
+async function getData() {
+  const { results } = await fetch(
+    `https://api.themoviedb.org/3/search/movie?api_key=f4ecb1fb8bfb1422c9eb54f8bf56eb52${
+      inputQuery.value ? queryFilm + inputQuery.value : queryFilmDefault}`
+  ).then((response) => response.json())
+
+  const dataApiTwo = await Promise.all(
+>>>>>>> 96728ddd984655c918b105686f7108fdbfda4ead
     results.map((elemFilm) => {
       const timeFilm = elemFilm.release_date.replace(/[^0-9]/g, "");
       return fetch(
@@ -22,7 +32,11 @@ async function getData(nameFilm) {
     })
   );
 
+<<<<<<< HEAD
   moonPhase.forEach((elemFilm) => {
+=======
+  dataApiTwo.forEach((elemFilm) => {
+>>>>>>> 96728ddd984655c918b105686f7108fdbfda4ead
     setData(elemFilm)
   });
 }
@@ -52,8 +66,12 @@ function setData(elemFilm) {
 buttonQuery.addEventListener('click',function(event){
     if(event){
         cardsBlock.innerHTML = ''
+<<<<<<< HEAD
         const nameFilm = inputQuery.value
         getData(nameFilm)
+=======
+        getData()
+>>>>>>> 96728ddd984655c918b105686f7108fdbfda4ead
     }
 })
 
