@@ -8,80 +8,53 @@ const queryFilmDefault = '&query=War'
 
 let queryFilm ='&query='
 
-function getDataCard(){
-    fetch(`https://api.themoviedb.org/3/search/movie?api_key=f4ecb1fb8bfb1422c9eb54f8bf56eb52${
-        inputQuery.value ? queryFilm + inputQuery.value : queryFilmDefault}`)
-        .then((response) => {
-            if (response.status !== 200) {
-                console.log('Looks like there was a problem');
-                console.log(`Status Code: ${response.status}`);
-                return;
-            }
-            return response.json();
-        })
-        .then(( { results } )=>{
-            setDataCard(results)
-        })
-        .catch((Error)=>{
-            console.log(Error)
-        })
-}
+async function getData() {
+  const { results } = await fetch(
+    `https://api.themoviedb.org/3/search/movie?api_key=f4ecb1fb8bfb1422c9eb54f8bf56eb52${
+      inputQuery.value ? queryFilm + inputQuery.value : queryFilmDefault}`
+  ).then((response) => response.json())
 
-function setDataCard(results){
-    results.forEach(elem => {
-        const cardImage = document.createElement('img')
-        const cardTime = document.createElement('div')
-        cardTime.setAttribute('class','cardTime')
-        const cardName = document.createElement('div')
-        cardName.setAttribute('class','cardName')
-        const card = document.createElement('div')
-        card.setAttribute('class','card')
-        const timeFilm = elem.release_date.replace(/[^0-9]/g, '')
-        getDataMoonPhase(timeFilm,card)
-        if(elem.poster_path){
-            cardName.append('Name: ' + elem.original_title)
-            card.append(cardName)
-            cardImage.setAttribute('src',`${urlImage + urlImageSize + elem.poster_path}`)
-            card.append(cardImage)
-            cardTime.append('Release: ' + elem.release_date)
-            card.append(cardTime)
-            cardsBlock.append(card)
-        }
-    });
-}
-
-function getDataMoonPhase(timeFilm,card){
-    fetch(`http://api.farmsense.net/v1/moonphases/?d=${timeFilm}`)
-    .then((response)=>{
-        if (response.status !== 200) {
-            console.log('Looks like there was a problem');
-            console.log(`Status Code: ${response.status}`);
-            return;
-        }
-        return response.json();
+  const dataApiTwo = await Promise.all(
+    results.map((elemFilm) => {
+      const timeFilm = elemFilm.release_date.replace(/[^0-9]/g, "");
+      return fetch(
+        `https://api.farmsense.net/v1/moonphases/?d=${timeFilm}`
+      ).then((r) => r.json()).then(([res]) => ({ ...elemFilm, ...res })).catch((error)=>{alert('Status Error: ',error)})
     })
-    .then((results)=>{
-        setDataMoonPhase(results,card)
-    })
+  );
+
+  dataApiTwo.forEach((elemFilm) => {
+    setData(elemFilm)
+  });
 }
 
-function setDataMoonPhase(results,card){
-    results.forEach(elem => {
-        const cardMoonPhase = document.createElement('div')
-        if(elem.Phase){
-            cardMoonPhase.append('Phase: ' + elem.Phase)
-            cardMoonPhase.setAttribute('class','cardPhase')
-            card.append(cardMoonPhase)
-            cardsBlock.append(card)
-        }
-    });
+function setData(elemFilm) {
+  const cardImage = document.createElement('img')
+  const cardTime = document.createElement('p')
+  cardTime.setAttribute('class','cardTime')
+  const cardName = document.createElement('p')
+  cardName.setAttribute('class','cardName')
+  const card = document.createElement('div')
+  card.setAttribute('class','card')
+  const cardMoonPhase = document.createElement('p')
+  cardMoonPhase.setAttribute('class','cardPhase')
+  if(elemFilm.poster_path){
+    cardMoonPhase.append('Phase: ' + elemFilm.Phase)
+    cardName.append('Name: ' + elemFilm.original_title)
+    card.append(cardName)
+    cardImage.setAttribute('src',`${urlImage + urlImageSize + elemFilm.poster_path}`)
+    card.append(cardImage)
+    cardTime.append('Release: ' + elemFilm.release_date)
+    card.append(cardTime)
+    card.append(cardMoonPhase)
+    cardsBlock.append(card)
+  }
 }
-
-
 buttonQuery.addEventListener('click',function(event){
     if(event){
         cardsBlock.innerHTML = ''
-        setDataCard()
+        getData()
     }
 })
-getDataCard()
+
+getData()
