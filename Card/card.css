@@ -8,7 +8,7 @@ body {
   display: -ms-flexbox;
   display: flex;
   margin: 0;
-  height: 50px;
+  height: 49px;
   background-color: #DCDCDC;
 }
 
@@ -16,13 +16,18 @@ body {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-          display: flex;
-          flex-wrap: wrap;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  background-color: #ededed;
 }
 
 .query,
 .card,
-img {
+img,
+p {
   margin-top: auto;
   margin-bottom: auto;
   margin-left: auto;
@@ -31,38 +36,46 @@ img {
 
 img {
   width: 83%;
+  border-radius: 8px;
 }
 
 .inputQuery {
   outline: none;
   height: 20px;
   border-radius: 15px;
-}
-
-.card {
-  text-align: center;
-  background-color: #22b8e6;
-  margin: 10px 0 10px 30px;
-  border: 4px solid black;
-  border-radius: 25px;
-  padding-top: 10px;
-}
-
-.query {
-  position: relative;
-  width: 300px;
-  margin: 0 auto;
-}
-
-.inputQuery {
   width: 95%;
   height: 42px;
   padding-left: 10px;
   border: 2px solid #7BA7AB;
   border-radius: 5px;
   outline: none;
-  background: #F9F0DA;
-  color: #9E9C9C;
+  background: #f1f3f4;
+  color: #0c0808;
+  font-family: Times, Times New Roman, serif;
+}
+
+.card {
+  text-align: center;
+  background-color: #a4b3d2;
+  margin: 10px 0 10px 30px;
+  border-radius: 25px;
+  padding-top: 10px;
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 10px;
+}
+
+.card:hover {
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
+  -webkit-box-shadow: 12px 14px 28px rgba(0, 0, 0, 0.25), 12px 10px 10px rgba(0, 0, 0, 0.22);
+          box-shadow: 12px 14px 28px rgba(0, 0, 0, 0.25), 12px 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.query {
+  position: relative;
+  width: 300px;
+  margin: 0 auto;
 }
 
 .buttonQuery {
@@ -77,8 +90,14 @@ img {
   cursor: pointer;
 }
 
+.buttonQuery:hover {
+  background-color: #288ba5;
+}
+
 .buttonQuery::before {
+  font-size: Arial, sans-serif;
   content: "Click";
   font-size: 12px;
   color: black;
 }
+/*# sourceMappingURL=card.css.map */
